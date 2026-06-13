@@ -1,0 +1,6 @@
+@TrueMed.LabOrderTracker.API_HostAddress = http://localhost:5044
+
+GET {{TrueMed.LabOrderTracker.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
