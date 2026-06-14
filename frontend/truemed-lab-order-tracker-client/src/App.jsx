@@ -99,10 +99,9 @@ function App() {
       <section className="hero-card">
         <div>
           <p className="eyebrow">True Med Lab Order Tracker</p>
-          <h1>Submit and monitor patient lab orders in one place.</h1>
+          <h1>Patient Laboratory Order Tracking</h1>
           <p className="lead">
-            Capture the patient, test type, urgency, and collection date, then keep the order
-            list current without a manual refresh.
+            Submit new laboratory orders and monitor existing requests. Orders are automatically updated and prioritized to support efficient workflow management.
           </p>
         </div>
         <OrderSummary orders={orders} statCount={statCount} />

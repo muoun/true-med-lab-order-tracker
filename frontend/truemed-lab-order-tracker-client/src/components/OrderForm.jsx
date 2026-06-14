@@ -91,7 +91,14 @@ function OrderForm({
         </label>
 
         <button type="submit" className="submit-button" disabled={isSubmitting}>
-          {isSubmitting ? 'Submitting…' : 'Submit order'}
+          {isSubmitting ? (
+            <span className="submit-button-content" aria-live="polite">
+              <span className="spinner" aria-hidden="true" />
+              Submitting…
+            </span>
+          ) : (
+            'Submit order'
+          )}
         </button>
 
         {errors.root?.message && <p className="form-message form-message-error">{errors.root.message}</p>}

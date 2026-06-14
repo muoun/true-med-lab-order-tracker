@@ -5,7 +5,7 @@ function OrderSummary({ orders, statCount }) {
         <strong>{orders.length}</strong>
         <span>Total orders</span>
       </article>
-      <article>
+      <article className="stat-summary-card">
         <strong>{statCount}</strong>
         <span>STAT orders</span>
       </article>
