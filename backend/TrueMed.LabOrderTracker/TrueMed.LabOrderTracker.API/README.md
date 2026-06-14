@@ -137,13 +137,3 @@ to return STAT orders only.
 * Global exception middleware
 * HTTP status code handling
 
-## Future Improvements
-
-Given additional development time, the following improvements could be implemented:
-
-* Unit tests
-* Integration tests
-* Structured logging
-* Authentication and Authorization
-* API versioning
-* Docker support
