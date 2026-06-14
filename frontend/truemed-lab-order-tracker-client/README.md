@@ -123,18 +123,6 @@ src/
 * Network error handling
 * User-friendly error messages
 
-## Future Improvements
-
-Given additional development time, the following improvements could be implemented:
-
-* Unit tests using React Testing Library
-* End-to-end testing
-* Pagination for large datasets
-* Advanced filtering and search
-* Authentication integration
-* Responsive mobile enhancements
-* Dark mode support
-
 ## Notes
 
 The frontend communicates with the backend through a centralized service layer and Vite proxy configuration, keeping API communication separated from UI components.
