@@ -1,6 +1,6 @@
 # Lab Order Tracker API
 
-ASP.NET Core Web API developed as part of the TrueMed Lab Order Tracker technical assessment.
+ASP.NET Core Web API developed as part of the True Med Lab Order Tracker technical assessment.
 
 The API provides functionality for creating and retrieving laboratory orders with validation, filtering, SQLite persistence, and a layered architecture using Controllers, Services, and Repositories.
 

@@ -23,12 +23,18 @@ namespace TrueMed.LabOrderTracker.API.Repositories
             return order;
         }
 
-        public async Task<IReadOnlyList<Order>> ListAsync()
+        public async Task<IReadOnlyList<Order>> ListAsync(Models.Priority? priority = null)
         {
-            return await _db.Orders
+            var query = _db.Orders
                 .AsNoTracking()
-                .OrderByDescending(o => o.CollectionDate)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (priority.HasValue)
+            {
+                query = query.Where(o => o.Priority == priority.Value);
+            }
+
+            return await query.OrderByDescending(o => o.CollectionDate).ToListAsync();
         }
     }
 }

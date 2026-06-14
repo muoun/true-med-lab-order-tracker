@@ -7,6 +7,6 @@ namespace TrueMed.LabOrderTracker.API.Repositories
     public interface IOrderRepository
     {
         Task<Order> AddAsync(Order order);
-        Task<IReadOnlyList<Order>> ListAsync();
+        Task<IReadOnlyList<Order>> ListAsync(Models.Priority? priority = null);
     }
 }
