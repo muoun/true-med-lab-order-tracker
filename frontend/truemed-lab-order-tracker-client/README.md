@@ -9,6 +9,8 @@ The application provides a user-friendly interface for creating and viewing labo
 * React
 * Vite
 * JavaScript (ES6+)
+* React Hook Form
+* TanStack React Query
 * Custom Hooks
 * Service-Based API Layer
 
@@ -81,7 +83,8 @@ src/
 ### Responsibilities
 
 * Components handle UI rendering
-* Custom Hooks manage state and data loading
+* React Hook Form manages form state, validation, and error messages
+* Custom Hooks and TanStack React Query manage order fetching, caching, and refresh behavior
 * Services centralize API communication
 * Utility functions provide reusable helper methods
 * Constants centralize application configuration
@@ -102,13 +105,13 @@ src/
   * Routine
   * STAT
 * Collection Date picker
-* Client-side validation
+* React Hook Form validation for required fields and date checks
 * Loading indicators during submission
 
 ### Order List
 
 * Displays submitted orders
-* Automatically refreshes after successful submission
+* Automatically refreshes after successful submission using React Query
 * No manual page refresh required
 * Orders sorted by collection date
 * STAT orders visually highlighted

@@ -1,39 +1,37 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getOrders } from '../services/orderService'
 import { normalizeOrders } from '../utils/validationUtils'
 
+const ORDERS_QUERY_KEY = ['orders']
+
 export const useOrders = () => {
-  const [orders, setOrders] = useState([])
-  const [isLoadingOrders, setIsLoadingOrders] = useState(false)
-  const [loadError, setLoadError] = useState('')
+  const queryClient = useQueryClient()
+
+  const { data = [], isLoading, error } = useQuery({
+    queryKey: ORDERS_QUERY_KEY,
+    queryFn: async () => {
+      const response = await getOrders()
+
+      return normalizeOrders(response)
+    },
+    staleTime: 30_000,
+    refetchOnWindowFocus: false,
+  })
 
   const refreshOrders = useCallback(async () => {
-    setIsLoadingOrders(true)
-    setLoadError('')
-
-    try {
-      const data = await getOrders()
-      setOrders(normalizeOrders(data))
-    } catch (error) {
-      setLoadError(error instanceof Error ? error.message : 'Unable to load orders.')
-    } finally {
-      setIsLoadingOrders(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    refreshOrders()
-  }, [refreshOrders])
+    await queryClient.invalidateQueries({ queryKey: ORDERS_QUERY_KEY })
+  }, [queryClient])
 
   const statCount = useMemo(
-    () => orders.filter((order) => String(order.priority || '').toLowerCase() === 'stat').length,
-    [orders],
+    () => data.filter((order) => String(order.priority || '').toLowerCase() === 'stat').length,
+    [data],
   )
 
   return {
-    orders,
-    isLoadingOrders,
-    loadError,
+    orders: data,
+    isLoadingOrders: isLoading,
+    loadError: error instanceof Error ? error.message : '',
     statCount,
     refreshOrders,
   }

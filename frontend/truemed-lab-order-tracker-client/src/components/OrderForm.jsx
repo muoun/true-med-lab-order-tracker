@@ -1,13 +1,17 @@
 import { PRIORITY_OPTIONS, TEST_OPTIONS } from '../constants/orderConstants'
 
 function OrderForm({
-  form,
+  register,
+  watch,
   errors,
   isSubmitting,
   submitMessage,
-  onFieldChange,
   onSubmit,
 }) {
+  const selectedPriority = watch('priority') || 'Routine'
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const minDate = today.toISOString().split('T')[0]
   return (
     <article className="panel panel-form">
       <header className="panel-header">
@@ -22,22 +26,18 @@ function OrderForm({
           <span>Patient Name</span>
           <input
             type="text"
-            name="patientName"
-            value={form.patientName}
-            onChange={onFieldChange}
             placeholder="Enter patient name"
             aria-invalid={Boolean(errors.patientName)}
+            {...register('patientName', { required: 'Patient name is required.' })}
           />
-          {errors.patientName && <small className="field-error">{errors.patientName}</small>}
+          {errors.patientName && <small className="field-error">{errors.patientName.message}</small>}
         </label>
 
         <label className="field">
           <span>Test Type</span>
           <select
-            name="testType"
-            value={form.testType}
-            onChange={onFieldChange}
             aria-invalid={Boolean(errors.testType)}
+            {...register('testType', { required: 'Please choose a test type.' })}
           >
             <option value="">Select test type</option>
             {TEST_OPTIONS.map((option) => (
@@ -46,45 +46,55 @@ function OrderForm({
               </option>
             ))}
           </select>
-          {errors.testType && <small className="field-error">{errors.testType}</small>}
+          {errors.testType && <small className="field-error">{errors.testType.message}</small>}
         </label>
 
         <fieldset className="field field-radio-group">
           <legend>Priority</legend>
           <div className="radio-row">
             {PRIORITY_OPTIONS.map((option) => (
-              <label key={option} className={`radio-chip ${form.priority === option ? 'active' : ''}`}>
+              <label key={option} className={`radio-chip ${selectedPriority === option ? 'active' : ''}`}>
                 <input
                   type="radio"
-                  name="priority"
                   value={option}
-                  checked={form.priority === option}
-                  onChange={onFieldChange}
+                  {...register('priority', { required: 'Please choose a priority.' })}
                 />
                 <span>{option}</span>
               </label>
             ))}
           </div>
-          {errors.priority && <small className="field-error">{errors.priority}</small>}
+          {errors.priority && <small className="field-error">{errors.priority.message}</small>}
         </fieldset>
 
         <label className="field">
           <span>Collection Date</span>
           <input
             type="date"
-            name="collectionDate"
-            value={form.collectionDate}
-            onChange={onFieldChange}
+            min={minDate}
             aria-invalid={Boolean(errors.collectionDate)}
+            {...register('collectionDate', {
+              required: 'Collection date is required.',
+              validate: (value) => {
+                if (!value) {
+                  return 'Collection date is required.'
+                }
+
+                const selectedDate = new Date(`${value}T00:00:00`)
+                const todayDate = new Date()
+                todayDate.setHours(0, 0, 0, 0)
+
+                return selectedDate >= todayDate || 'Collection date cannot be in the past.'
+              },
+            })}
           />
-          {errors.collectionDate && <small className="field-error">{errors.collectionDate}</small>}
+          {errors.collectionDate && <small className="field-error">{errors.collectionDate.message}</small>}
         </label>
 
         <button type="submit" className="submit-button" disabled={isSubmitting}>
           {isSubmitting ? 'Submitting…' : 'Submit order'}
         </button>
 
-        {errors.submit && <p className="form-message form-message-error">{errors.submit}</p>}
+        {errors.root?.message && <p className="form-message form-message-error">{errors.root.message}</p>}
         {submitMessage && <p className="form-message form-message-success">{submitMessage}</p>}
       </form>
     </article>
